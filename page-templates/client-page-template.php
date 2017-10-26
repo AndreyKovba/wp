@@ -50,11 +50,16 @@ else{
 
             <?php
             if(!isset($_SESSION['client_group'])){
-                if($isBadGroupPassword){
-                    echo '$isBadGroupPassword';
-                }
                 ?>
                 <div class="post-inner-content">
+                    <?php
+                    if($isBadGroupPassword){
+                        ?>
+                        <p style="color:red;">Incorrect password</p>
+                        <?php
+                    }
+                    ?>
+                    <p>This post is password protected. To view it please enter your password below:</p>
                     <form method="post" action="">
                         <input type="hidden" name="source_url" value="<?php echo $_SERVER["REQUEST_URI"]; ?>"/>
                         <div class="row">

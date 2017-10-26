@@ -37,6 +37,16 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && (strpos( $_SERVER['HTTP_USER_AGENT'
 
     ga('create', 'UA-92307976-1', 'auto');
     ga('send', 'pageview');
+    <?php
+    if(!isset($_SESSION['client_group'])){
+    ?>
+        jQuery(document).ready(function(){
+            jQuery('#menu-item-859>span').remove();
+            jQuery('#menu-item-859>ul.dropdown-menu').remove();
+        });
+    <?php
+    }
+    ?>
 
 </script>
 <body <?php body_class(); ?>>

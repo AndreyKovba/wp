@@ -31,8 +31,19 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'Gill Sans MT';
 }
 .navbar.navbar-default {
-    font-family: 'Gill Sans MT;
+    font-family: 'Gill Sans MT';
 }
-.main-content-area>.row{
-    /*width: 100%;*/
+.contact-paragraph{
+    margin-bottom: 22px;
+}
+.dropdown-menu ul.dropdown-menu{
+    left: auto;
+    right: 100%;
+}
+@media (min-width: 769px) {
+    .dropdown-menu .caret {
+        float: left;
+        transform: rotate(180deg);
+        margin-right: 5px;
+    }
 }
