@@ -8,6 +8,8 @@
  */
 
 //unset($_SESSION['client_group']);
+
+global $post;
 $isBadGroupPassword = isset($_SESSION['bad-group-password']) ?: false;
 unset($_SESSION['bad-group-password']);
 
@@ -16,30 +18,7 @@ function is_page_visible(){
 }
 
 if(isset($_POST['group-password'])){
-    $posts = get_posts([
-        'post_type'		=> 'client-groups',
-        'meta_query'	=> [
-            [
-                'key'	  	=> 'password',
-                'value'	  	=> $_POST['group-password'],
-                'compare' 	=> '=',
-            ],
-        ],
-    ]);
-    $url = '/';
-    if(count($posts)){
-        $_SESSION['client_group'] = $posts[0]->ID;
-        $url = site_url() . '/welcome-page/';
-    }
-    else{
-        unset($_SESSION['client_group']);
-        $_SESSION['bad-group-password'] = true;
-        if(isset($_POST['source_url'])) {
-            $url = $_POST['source_url'];
-        }
-    }
-    header('Location: ' . $url);
-    exit;
+    login_to_group($_POST);
 }
 else{
     get_header(); ?>
@@ -90,7 +69,12 @@ else{
                 else {
                     while (have_posts()) {
                         the_post();
-                        get_template_part('template-parts/content', 'page');
+                        if($post->post_name == 'welcome-page') {
+                            get_template_part('template-parts/content', 'welcome-page');
+                        }
+                        else{
+                            get_template_part('template-parts/content', 'page');
+                        }
                         // If comments are open or we have at least one comment, load up the comment template
                         if (get_theme_mod('sparkling_page_comments', 1) == 1) {
                             if (comments_open() || '0' != get_comments_number()) {
