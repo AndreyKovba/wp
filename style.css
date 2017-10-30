@@ -47,3 +47,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
         margin-right: 5px;
     }
 }
+.dropdown-menu .disabled {
+    background: white !important;
+}
+.dropdown-menu .disabled a{
+    color: #c0c0c0 !important;
+}

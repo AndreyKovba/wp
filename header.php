@@ -37,17 +37,32 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && (strpos( $_SERVER['HTTP_USER_AGENT'
 
     ga('create', 'UA-92307976-1', 'auto');
     ga('send', 'pageview');
-    <?php
-    if(!isset($_SESSION['client_group'])){
-    ?>
-        jQuery(document).ready(function(){
+
+    jQuery(document).ready(function () {
+        <?php
+        if(!isset($_SESSION['client_group'])){
+        ?>
             jQuery('#menu-item-859>span').remove();
             jQuery('#menu-item-859>ul.dropdown-menu').remove();
-        });
-    <?php
-    }
-    ?>
-
+        <?php
+        }
+        else{
+            $availablePages = getAvailablePages();
+        ?>
+            var availableMenuItems = [<?php echo implode(',', getAvailableMenuItems($availablePages)); ?>];
+            jQuery('#menu-item-859>ul.dropdown-menu a').each(function () {
+                var li = jQuery(this).closest('li');
+                var idArray = li.attr('id').split('-');
+                var menuId = idArray[idArray.length - 1] * 1;
+                if(jQuery.inArray(menuId, availableMenuItems)==-1){
+                    li.addClass('disabled');
+                    jQuery(this).removeAttr('href');
+                }
+            });
+        <?php
+        }
+        ?>
+    });
 </script>
 <body <?php body_class(); ?>>
 <a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>

@@ -8,14 +8,9 @@
  */
 
 //unset($_SESSION['client_group']);
-
 global $post;
 $isBadGroupPassword = isset($_SESSION['bad-group-password']) ?: false;
 unset($_SESSION['bad-group-password']);
-
-function is_page_visible(){
-    return true;
-}
 
 if(isset($_POST['group-password'])){
     login_to_group($_POST);
@@ -59,7 +54,7 @@ else{
                 <?php
             }
             else {
-                if(!is_page_visible()){
+                if( !in_array(get_the_ID(), getAvailablePages()) ){
                     ?>
                     <div class="post-inner-content">
                         this page is not opened for your group yet
