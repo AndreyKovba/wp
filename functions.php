@@ -49,7 +49,7 @@ function getAvailablePages(){
         return $availablePages;
     }
     $currentDate = new DateTime();
-    $startDate = DateTime::createFromFormat ('d M, Y', get_post_meta($clientGroup->ID, 'start-date', true));
+    $startDate = DateTime::createFromFormat ('Y-m-d', get_post_meta($clientGroup->ID, 'start-date', true));
     $scheduleId = get_post_meta($clientGroup->ID, 'schedule', true);
     $scheduleData = unserialize(get_post_meta($scheduleId, 'schedule', true));
     foreach($scheduleData as $scheduleItem){

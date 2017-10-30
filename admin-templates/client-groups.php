@@ -80,7 +80,7 @@ function wpt_group_fields() {
     </p>
     <script>
         jQuery(document).ready(function(){
-            jQuery('.datepicker').datepicker();
+            jQuery('.datepicker').datepicker({ dateFormat: 'yy-mm-dd'});
         });
     </script>
     <?php
