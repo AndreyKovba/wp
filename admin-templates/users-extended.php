@@ -9,25 +9,32 @@ function add_extra_user_fields( $user ) {
     ]);
     $selectedGroupID = get_user_meta( $user->ID, 'client-group', true);
     ?>
-    <select name="client-group">
-        <option value="-1">
-            ---
-        </option>
-        <?php
-            foreach( $posts as $post){
-                $groupID = $post->ID;
-                ?>
+    <table class="form-table">
+    <tbody>
+        <th>Group</th>
+        <td>
+            <select name="client-group">
+                <option value="-1">
+                    ---
+                </option>
+                <?php
+                foreach( $posts as $post){
+                    $groupID = $post->ID;
+                    ?>
                     <option value="<?php echo $groupID ?>" <?php
-                        if ($selectedGroupID == $groupID) {
-                            echo 'selected';
-                        }
+                    if ($selectedGroupID == $groupID) {
+                        echo 'selected';
+                    }
                     ?>>
                         <?php echo $post->post_title; ?>
                     </option>
-                <?php
-            }
-        ?>
-    </select>
+                    <?php
+                }
+                ?>
+            </select>
+        </td>
+    </tbody>
+    </table>
     <?php
 }
 

@@ -43,7 +43,6 @@ wp_enqueue_script( 'jquery-ui-datepicker' );
 function wpt_group_fields() {
     global $post;
     global $fields;
-
     foreach ($fields as $field) {
         $value = get_post_meta($post->ID, $field['name'], true);
         ?>
@@ -57,6 +56,28 @@ function wpt_group_fields() {
         <?php
     }
     ?>
+    <p>
+        <select name="schedule">
+            <option value="-1">---</option>
+            <?php
+            $schedules = get_posts([
+                'post_type' => 'schedule',
+            ]);
+            $scheduleId = get_post_meta($post->ID, 'schedule', true);
+            foreach ($schedules as $schedule){
+                ?>
+                <option value="<?php echo $schedule->ID;?>" <?php
+                    if($scheduleId==$schedule->ID){
+                        echo 'selected';
+                    }
+                ?>><?php
+                    echo $schedule->post_title;
+                    ?></option>
+                <?php
+            }
+            ?>
+        </select>
+    </p>
     <script>
         jQuery(document).ready(function(){
             jQuery('.datepicker').datepicker();
@@ -77,6 +98,7 @@ function wpt_save_events_meta($postId, $post) {
     foreach ($fields as $field) {
         $events_meta[$field['name']] = sanitize_text_field($_POST[$field['name']]);
     }
+    $events_meta['schedule'] = sanitize_text_field($_POST['schedule']);
 
     foreach ($events_meta as $key => $value) {
         if(get_post_meta($postId, $key, false)) {

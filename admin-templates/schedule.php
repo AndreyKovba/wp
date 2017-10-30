@@ -29,7 +29,7 @@ function getScheduleItemTemplate(){
     <table class="schedule-item form-table">
         <tr>
             <th>
-                <label>Page</label>
+                <label>Page name</label>
             </th>
             <td>
                 <select>
@@ -39,7 +39,7 @@ function getScheduleItemTemplate(){
         </tr>
         <tr>
             <th>
-                <label>Start day</label>
+                <label>Day to show</label>
             </th>
             <td>
                 <input type="text"/>
@@ -84,6 +84,7 @@ function wpt_schedule_fields() {
                 vertical-align: middle;
             }
             .schedule-item.form-table th{
+                line-height: 15px;
                 width: 150px;
             }
         </style>
@@ -141,9 +142,10 @@ function wpt_schedule_fields() {
                     });
                     var input = jQuery(newScheduleItem).find('input');
                     input.attr('name', name + '[' + lastIndex + '][pageDay]');
-                    if(typeof pageDay != 'undefined'){
-                        input.val(pageDay);
+                    if(typeof pageDay == 'undefined'){
+                        pageDay = 0;
                     }
+                    input.val(pageDay);
                     jQuery('.schedule').append(newScheduleItem);
                     lastIndex++;
                     currentPagesCount++;
@@ -164,6 +166,10 @@ function wpt_schedule_fields() {
 
                 jQuery(document).on('change', '.schedule-item select', function() {
                     applyIsSelected();
+                });
+
+                jQuery(document).on('change', '.schedule-item input', function() {
+                    jQuery(this).val(Math.abs( parseInt(jQuery(this).val()) ));
                 });
 
                 jQuery(document).on('click', '.add-schedule-item', function (e) {
