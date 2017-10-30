@@ -12,7 +12,7 @@ function register_client_group_type() {
         'public' => false,
         'show_ui' => true,
         'menu_position' => 20,
-        'supports' => array( 'title'),
+        'supports' => array('title'),
         'register_meta_box_cb' => 'add_events_metaboxes',
     );
     register_post_type('client-groups', $args);
@@ -65,7 +65,7 @@ function wpt_group_fields() {
     <?php
 }
 
-add_action('save_post', 'wpt_save_events_meta');
+add_action('save_post_client-groups', 'wpt_save_events_meta');
 function wpt_save_events_meta($postId, $post) {
     global $fields;
     if( $post->post_type == 'revision' ) {

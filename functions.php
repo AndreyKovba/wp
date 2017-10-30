@@ -14,8 +14,8 @@ function sparkling_enqueue_child_styles() {
 
 function login_to_group($postData){
     $groups = get_posts([
-        'post_type'		=> 'client-groups',
-        'meta_query'	=> [
+        'post_type' => 'client-groups',
+        'meta_query' => [
             [
                 'key' => 'password',
                 'value' => $postData['group-password'],
@@ -41,5 +41,6 @@ function login_to_group($postData){
 
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/client-groups.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/users-extended.php";
+require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/schedule.php";
 
 ?>
