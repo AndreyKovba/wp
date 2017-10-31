@@ -48,7 +48,7 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && (strpos( $_SERVER['HTTP_USER_AGENT'
         <?php
         }
         else{
-            $availablePages = getAvailablePages();
+            $availablePages = getAvailablePagesIds(getAvailablePages());
         ?>
             var availableMenuItems = [<?php echo implode(',', getAvailableMenuItems($availablePages)); ?>];
             jQuery('#menu-item-859>ul.dropdown-menu a').each(function () {

@@ -1,5 +1,4 @@
-<div class="pages-calendar">
-</div>
+<div class="pages-calendar"></div>
 <?php
 add_action('wp_footer', 'my_action_javascript', 99); // для фронта
 function my_action_javascript() {

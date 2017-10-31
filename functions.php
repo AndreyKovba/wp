@@ -40,14 +40,18 @@ function login_to_group($postData){
 }
 
 function getAvailablePages(){
-    $availablePages = [];
     if(!isset($_SESSION['client_group'])){
-        return $availablePages;
+        return [];
     }
     $clientGroup = get_post($_SESSION['client_group']);
     if(!$clientGroup){
-        return $availablePages;
+        return [];
     }
+    $allPages = get_pages([
+        'meta_key' => '_wp_page_template',
+        'meta_value' => 'page-templates/client-page-template.php'
+    ]);
+    $unavailableIds = [];
     $currentDate = new DateTime();
     $startDate = DateTime::createFromFormat ('Y-m-d', get_post_meta($clientGroup->ID, 'start-date', true));
     $scheduleId = get_post_meta($clientGroup->ID, 'schedule', true);
@@ -55,11 +59,27 @@ function getAvailablePages(){
     foreach($scheduleData as $scheduleItem){
         $scheduleStartDate = clone($startDate);
         $scheduleStartDate->add(new DateInterval("P{$scheduleItem['pageDay']}D"));
-        if($scheduleStartDate <= $currentDate){
-            $availablePages[] = $scheduleItem['pageId'];
+        if($scheduleStartDate > $currentDate){
+            $unavailableIds[] = $scheduleItem['pageId'];
         }
     }
-    return $availablePages;
+    return array_filter(
+        $allPages,
+        function($value, $key) use ($unavailableIds) {
+            if(in_array($value->ID, $unavailableIds)){
+                return false;
+            }
+            return true;
+        }
+    );
+}
+
+function getAvailablePagesIds($availablePages){
+    $availablePagesIds = [];
+    foreach($availablePages as $availablePage){
+        $availablePagesIds[] = $availablePage->ID;
+    }
+    return $availablePagesIds;
 }
 
 function getAvailableMenuItems($availablePages){
@@ -121,21 +141,6 @@ function get_month_callback() {
     </table>
     <?php
     wp_die();
-}
-
-function getOpenClientPages(){
-    $clientPagesOpened = [];
-    $clientPagesAll = get_pages([
-        'meta_key' => '_wp_page_template',
-        'meta_value' => 'page-templates/client-page-template.php'
-    ]);
-    $availablePages = getAvailablePages();
-    foreach ($clientPagesAll as $clientPage) {
-        if(in_array($clientPage->ID, $availablePages)){
-            $clientPagesOpened[] = $clientPage;
-        }
-    }
-    return $clientPagesOpened;
 }
 
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/client-groups.php";
