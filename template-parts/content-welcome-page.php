@@ -57,7 +57,6 @@ if ( is_page_template( 'page-fullwidth.php' ) ) {
         <?php endif; ?>
     </article><!-- #post-## -->
     <div class="row">
-        <?php $clientPages = getAvailablePages(); ?>
         <div class="col-sm-12 col-md-6">
             <?php
             include(locate_template('template-parts/content-calendar.php'));

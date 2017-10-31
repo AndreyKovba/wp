@@ -57,7 +57,7 @@ else{
                 <?php
             }
             else {
-                if( !in_array(get_the_ID(), getAvailablePagesIds(getAvailablePages())) ){
+                if( !in_array(get_the_ID(), getAvailablePagesIds(getClientPages())) ){
                     ?>
                     <div class="post-inner-content">
                         this page is not opened for your group yet

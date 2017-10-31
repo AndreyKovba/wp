@@ -39,7 +39,7 @@ function login_to_group($postData){
     exit;
 }
 
-function getAvailablePages(){
+function getClientPages($ignoreDate = false){
     if(!isset($_SESSION['client_group'])){
         return [];
     }
@@ -66,10 +66,10 @@ function getAvailablePages(){
     }
     return array_filter(
         $allPages,
-        function($page, $index) use ($scheduleInfo) {
+        function($page, $index) use ($scheduleInfo, $ignoreDate) {
             if(isset($scheduleInfo[$page->ID])){
                 $page->startDate = $scheduleInfo[$page->ID]['startDate'];
-                return $scheduleInfo[$page->ID]['isAvailable'];
+                return $ignoreDate || $scheduleInfo[$page->ID]['isAvailable'];
             }
             return true;
         }
@@ -102,6 +102,11 @@ function get_month_callback() {
         'July', 'August', 'September', 'October', 'November', 'December'];
     $year = $_POST['year'] * 1;
     $month = $_POST['month'] * 1;
+    $pagesDates = [];
+    $currentDate = new DateTime();
+    if(isset($_POST['pagesDates']) && isset($_POST['pagesDates']["{$year}-{$month}"])){
+        $pagesDates = $_POST['pagesDates'][$year.'-'.$month];
+    }
     ?>
 
     <div class="month-block">
@@ -112,6 +117,7 @@ function get_month_callback() {
     <?php
     $skipDays = (date('w', strtotime("{$year}-{$month}-01")) + 6) % 7;
     $maxDate = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    $isFuture = false;
     ?>
     <table class="days-list">
     <?php
@@ -128,7 +134,23 @@ function get_month_callback() {
                             $skipDays--;
                         }
                         else if ($dayNumber <= $maxDate){
-                            echo $dayNumber;
+                            $cellClass = '';
+                            if(in_array($dayNumber, $pagesDates)){
+                                $cellClass = 'open-date';
+                                if(!$isFuture){
+                                    $cellDate = DateTime::createFromFormat ('Y-m-d', "{$year}-{$month}-{$dayNumber}");
+                                    $isFuture = $cellDate > $currentDate;
+                                }
+
+                                if($isFuture){
+                                    $cellClass .= ' future';
+                                }
+                            }
+                            ?>
+                            <div class="day-number <?php echo $cellClass;?>">
+                                <?php echo $dayNumber;?>
+                            </div>
+                            <?php
                             $dayNumber++;
                         }
                         ?>

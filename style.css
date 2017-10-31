@@ -101,6 +101,21 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     text-align: center;
     height: 30px;
 }
+.pages-calendar .days-list td .day-number {
+    display: inline-block;
+    margin: 2px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+}
+.pages-calendar .days-list td .day-number.open-date{
+    background: #e37b00;
+    color: white;
+}
+.pages-calendar .days-list td .day-number.open-date.future{
+    background: #749dd3;
+    color: white;
+}
 
 .client-pages{
     margin: 20px 0px;

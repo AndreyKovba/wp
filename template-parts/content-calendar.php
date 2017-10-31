@@ -2,6 +2,19 @@
 <?php
 add_action('wp_footer', 'my_action_javascript', 99); // для фронта
 function my_action_javascript() {
+    $clientPages = getClientPages(true);
+    $pagesDates = [];
+    foreach($clientPages as $clientPage){
+        if(isset($clientPage->startDate)) {
+            $startDate = $clientPage->startDate;
+            $yearAndMonth = $startDate->format('Y-m');
+            $day = $startDate->format('d');
+            if(!isset($pagesDates[$yearAndMonth])){
+                $pagesDates[$yearAndMonth] = [];
+            }
+            $pagesDates[$yearAndMonth][] = $day;
+        }
+    }
     ?>
     <script type="text/javascript" >
         jQuery(document).ready(function() {
@@ -12,6 +25,13 @@ function my_action_javascript() {
                     action: 'get_month',
                     year: year,
                     month: month,
+                    pagesDates: {<?php
+                        $pagesDatesJs = [];
+                        foreach($pagesDates as $key=>$pagesDays){
+                            $pagesDatesJs[] = "'$key': [" . implode(', ', $pagesDays) . "]";
+                        }
+                        echo implode(',', $pagesDatesJs);
+                    ?>},
                 };
 
                 var url =  '<?php echo admin_url('admin-ajax.php'); ?>';

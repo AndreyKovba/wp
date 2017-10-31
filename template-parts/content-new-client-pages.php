@@ -1,5 +1,6 @@
 <div class="client-pages">
 <?php
+$clientPages = getClientPages();
 uasort($clientPages, function($firstElement, $secondElement){
     if(!isset($firstElement->startDate)){
         return 1;
@@ -13,9 +14,9 @@ uasort($clientPages, function($firstElement, $secondElement){
 foreach ($clientPages as $clientPage) {
     ?>
     <div class="client-page">
-        <div class="client-page-title">
+        <a class="client-page-title" href="<?php echo get_permalink($clientPage->ID); ?>">
             <?php echo $clientPage->post_title; ?>
-        </div>
+        </a>
         <div class="client-page-text">
             <?php
             $text = strip_tags($clientPage->post_content);
