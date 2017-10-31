@@ -51,7 +51,7 @@ function getAvailablePages(){
         'meta_key' => '_wp_page_template',
         'meta_value' => 'page-templates/client-page-template.php'
     ]);
-    $unavailableIds = [];
+    $scheduleInfo = [];
     $currentDate = new DateTime();
     $startDate = DateTime::createFromFormat ('Y-m-d', get_post_meta($clientGroup->ID, 'start-date', true));
     $scheduleId = get_post_meta($clientGroup->ID, 'schedule', true);
@@ -59,15 +59,17 @@ function getAvailablePages(){
     foreach($scheduleData as $scheduleItem){
         $scheduleStartDate = clone($startDate);
         $scheduleStartDate->add(new DateInterval("P{$scheduleItem['pageDay']}D"));
-        if($scheduleStartDate > $currentDate){
-            $unavailableIds[] = $scheduleItem['pageId'];
-        }
+        $scheduleInfo[$scheduleItem['pageId']] = [
+            'startDate' => $scheduleStartDate,
+            'isAvailable' => ($scheduleStartDate <= $currentDate),
+        ];
     }
     return array_filter(
         $allPages,
-        function($value, $key) use ($unavailableIds) {
-            if(in_array($value->ID, $unavailableIds)){
-                return false;
+        function($page, $index) use ($scheduleInfo) {
+            if(isset($scheduleInfo[$page->ID])){
+                $page->startDate = $scheduleInfo[$page->ID]['startDate'];
+                return $scheduleInfo[$page->ID]['isAvailable'];
             }
             return true;
         }

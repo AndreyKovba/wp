@@ -1,5 +1,15 @@
 <div class="client-pages">
 <?php
+uasort($clientPages, function($firstElement, $secondElement){
+    if(!isset($firstElement->startDate)){
+        return 1;
+    }
+    if(!isset($secondElement->startDate)){
+        return -1;
+    }
+    return $firstElement->startDate > $secondElement->startDate ? -1 : 1;
+});
+
 foreach ($clientPages as $clientPage) {
     ?>
     <div class="client-page">
