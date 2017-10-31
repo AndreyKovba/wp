@@ -73,8 +73,72 @@ function getAvailableMenuItems($availablePages){
     return $availableMenuItems;
 }
 
+add_action('wp_ajax_get_month', 'get_month_callback');
+add_action('wp_ajax_nopriv_get_month', 'get_month_callback');
+function get_month_callback() {
+    $monthes = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+    $year = $_POST['year'] * 1;
+    $month = $_POST['month'] * 1;
+    ?>
+
+    <div class="month-block">
+        <a href="#" class="previous-month"> < </a>
+        <?php echo $monthes[$month - 1] . ' ' . $year; ?>
+        <a href="#" class="next-month"> > </a>
+    </div>
+    <?php
+    $skipDays = (date('w', strtotime("{$year}-{$month}-01")) + 6) % 7;
+    $maxDate = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+    ?>
+    <table class="days-list">
+    <?php
+        $dayNumber = 1;
+        while($dayNumber <= $maxDate) {
+            ?>
+            <tr>
+                <?php
+                for($i=0; $i<7; $i++) {
+                    ?>
+                    <td>
+                        <?php
+                        if($skipDays>0){
+                            $skipDays--;
+                        }
+                        else if ($dayNumber <= $maxDate){
+                            echo $dayNumber;
+                            $dayNumber++;
+                        }
+                        ?>
+                    </td>
+                    <?php
+                }
+                ?>
+            </tr>
+            <?php
+        }
+    ?>
+    </table>
+    <?php
+    wp_die();
+}
+
+function getOpenClientPages(){
+    $clientPagesOpened = [];
+    $clientPagesAll = get_pages([
+        'meta_key' => '_wp_page_template',
+        'meta_value' => 'page-templates/client-page-template.php'
+    ]);
+    $availablePages = getAvailablePages();
+    foreach ($clientPagesAll as $clientPage) {
+        if(in_array($clientPage->ID, $availablePages)){
+            $clientPagesOpened[] = $clientPage;
+        }
+    }
+    return $clientPagesOpened;
+}
+
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/client-groups.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/users-extended.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/schedule.php";
-
 ?>
