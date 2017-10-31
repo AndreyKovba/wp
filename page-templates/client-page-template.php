@@ -7,13 +7,16 @@
  * @since 1.0
  */
 
-//unset($_SESSION['client_group']);
 global $post;
 $isBadGroupPassword = isset($_SESSION['bad-group-password']) ?: false;
 unset($_SESSION['bad-group-password']);
 
 if(isset($_POST['group-password'])){
     login_to_group($_POST);
+}
+elseif(isset($_POST['logout'])){
+    unset($_SESSION['client_group']);
+    exit;
 }
 else{
     get_header(); ?>
