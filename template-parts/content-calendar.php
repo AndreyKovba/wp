@@ -16,7 +16,7 @@ function my_action_javascript() {
         }
     }
     ?>
-    <script type="text/javascript" >
+    <script type="text/javascript">
         jQuery(document).ready(function() {
             var currentYear = <?php echo date('Y');?>;
             var currentMonth = <?php echo date('m');?>;

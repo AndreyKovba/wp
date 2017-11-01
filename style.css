@@ -50,7 +50,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .dropdown-menu .disabled {
     background: white !important;
 }
-.dropdown-menu .disabled a{
+.dropdown-menu .disabled>a{
     color: #c0c0c0 !important;
 }
 .log-out-button{

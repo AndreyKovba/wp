@@ -88,7 +88,7 @@ function wpt_schedule_fields() {
                 width: 150px;
             }
         </style>
-        <script>
+        <script type="text/javascript">
             jQuery(document).ready(function(){
                 var currentPagesCount = 0;
                 var lastIndex = <?php echo $lastIndex;?>;
@@ -100,7 +100,10 @@ function wpt_schedule_fields() {
                         },';
                     }
                 ?>};
-                var scheduleTemplate = jQuery(<?php echo '`' . getScheduleItemTemplate() . '`';?>);
+
+
+                var scheduleTemplate = jQuery(<?php echo "'" . str_replace("\n", " ", getScheduleItemTemplate()) . "'";?>);
+
                 <?php
                 foreach($schedule as $scheduleItem){
                     $pageId = $scheduleItem['pageId'];
@@ -137,7 +140,7 @@ function wpt_schedule_fields() {
                     jQuery.each(clientPages, function(index, value){
                         var selected = (pageId == index) ? 'selected' : '';
                         select.append(
-                            `<option value="` + index + `" ` + selected + `>` + value.postTitle + `</option>`
+                            '<option value="' + index + '" ' + selected + '>' + value.postTitle + '</option>'
                         );
                     });
                     var input = jQuery(newScheduleItem).find('input');
