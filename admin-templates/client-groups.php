@@ -101,14 +101,7 @@ function wpt_save_events_meta($postId, $post) {
     $events_meta['schedule'] = sanitize_text_field($_POST['schedule']);
 
     foreach ($events_meta as $key => $value) {
-        if(get_post_meta($postId, $key, false)) {
-            update_post_meta($postId, $key, $value);
-        } else {
-            add_post_meta($postId, $key, $value);
-        }
-        if(!$value){
-            delete_post_meta($postId, $key);
-        }
+        savePost($postId, $key, $value);
     }
 
 }

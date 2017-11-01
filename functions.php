@@ -167,6 +167,17 @@ function get_month_callback() {
     wp_die();
 }
 
+function savePost($postId, $key, $value){
+    if(get_post_meta($postId, $key, false)) {
+        update_post_meta($postId, $key, $value);
+    } else {
+        add_post_meta($postId, $key, $value);
+    }
+    if(!$value){
+        delete_post_meta($postId, $key);
+    }
+}
+
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/client-groups.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/users-extended.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/schedule.php";

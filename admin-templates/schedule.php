@@ -42,7 +42,8 @@ function getScheduleItemTemplate(){
                 <label>Day to show</label>
             </th>
             <td>
-                <input type="text"/>
+                <input class="days" type="text" readonly/>
+                <input type="text" class="datepicker"/>
             </td>
         </tr>
         <tr>
@@ -62,11 +63,25 @@ function wpt_schedule_fields() {
         'meta_value' => 'page-templates/client-page-template.php'
     ]);
     global $post;
+    $tmpDate = get_post_meta($post->ID, 'tmp-date', true);
+    if(!$tmpDate){
+        $tmpDate = date('Y-m-d');
+    }
     $schedule = unserialize(get_post_meta($post->ID, 'schedule', true));
     $name = 'schedule';
     $lastIndex = 0;
     ?>
     <div class="schedule-block">
+        <table class="tmp-date form-table">
+            <tr>
+                <th>
+                    <label>Temp date start</label>
+                </th>
+                <td>
+                    <input type="text" name="tmp-date" class="datepicker" value="<?php echo $tmpDate;?>"/>
+                </td>
+            </tr>
+        </table>
         <div class="schedule">
         </div>
         <a href="#" class="page-title-action add-schedule-item">Add</a>
@@ -77,19 +92,58 @@ function wpt_schedule_fields() {
             .schedule-item.form-table{
                 margin-bottom: 15px !important;
             }
+            .postbox table.form-table.tmp-date{
+                margin-bottom: 30px;
+            }
+            .tmp-date th,
+            .tmp-date td,
             .schedule-item.form-table th,
             .schedule-item.form-table td{
+                position: relative;
                 padding: 0px !important;
                 height: 35px;
                 vertical-align: middle;
             }
+            .tmp-date th,
             .schedule-item.form-table th{
                 line-height: 15px;
                 width: 150px;
             }
+            .schedule-item.form-table .days,
+            .schedule-item.form-table .datepicker
+            {
+                width: 100px;
+            }
+            .schedule-item.form-table .days{
+                background: white;
+                cursor: text;
+            }
+            .schedule-item.form-table .datepicker{
+                opacity: 0;
+                position: absolute;
+                top: 4px;
+                left: 0px;
+            }
         </style>
         <script type="text/javascript">
             jQuery(document).ready(function(){
+                var tmpDate = jQuery('.tmp-date .datepicker').val();
+                jQuery('.tmp-date .datepicker').datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    onSelect: function(dateText, inst) {
+                        var selectedTime = new Date(dateText).getTime();
+                        var oldTmpTime = new Date(tmpDate).getTime();
+                        var days = getDays(selectedTime - oldTmpTime);
+                        tmpDate = dateText;
+                        jQuery('.schedule-item .days').each(function(index){
+                            var newDays = jQuery(this).val()*1 - days;
+                            if(newDays<0){
+                                newDays = 0;
+                            }
+                            jQuery(this).val(newDays);
+                        });
+                    },
+                });
                 var currentPagesCount = 0;
                 var lastIndex = <?php echo $lastIndex;?>;
                 var name = '<?php echo $name;?>';
@@ -143,12 +197,24 @@ function wpt_schedule_fields() {
                             '<option value="' + index + '" ' + selected + '>' + value.postTitle + '</option>'
                         );
                     });
-                    var input = jQuery(newScheduleItem).find('input');
+                    var input = jQuery(newScheduleItem).find('input.days');
                     input.attr('name', name + '[' + lastIndex + '][pageDay]');
                     if(typeof pageDay == 'undefined'){
                         pageDay = 0;
                     }
                     input.val(pageDay);
+                    newScheduleItem.find('.datepicker').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        onSelect: function(dateText, inst) {
+                            var selectedTime = new Date(dateText).getTime();
+                            var tmpTime = new Date(jQuery('.tmp-date .datepicker').val()).getTime();
+                            var days = getDays(selectedTime - tmpTime);
+                            if(days < 0){
+                                days = 0;
+                            }
+                            jQuery('#' + inst.id).closest('.schedule-item').find('.days').val(days);
+                        },
+                    });
                     jQuery('.schedule').append(newScheduleItem);
                     lastIndex++;
                     currentPagesCount++;
@@ -156,6 +222,10 @@ function wpt_schedule_fields() {
                         jQuery('.add-schedule-item').hide();
                     }
                     applyIsSelected();
+                }
+
+                function getDays($milliSeconds){
+                    return Math.round($milliSeconds / 24 / 3600 / 1000);
                 }
 
                 function removeScheduleItem(scheduleItem){
@@ -169,10 +239,6 @@ function wpt_schedule_fields() {
 
                 jQuery(document).on('change', '.schedule-item select', function() {
                     applyIsSelected();
-                });
-
-                jQuery(document).on('change', '.schedule-item input', function() {
-                    jQuery(this).val(Math.abs( parseInt(jQuery(this).val()) ));
                 });
 
                 jQuery(document).on('click', '.add-schedule-item', function (e) {
@@ -192,14 +258,6 @@ function wpt_schedule_fields() {
 
 add_action('save_post_schedule', 'wpt_save_schedules_meta');
 function wpt_save_schedules_meta($postId, $post) {
-    $key = 'schedule';
-    $value = serialize($_POST[$key]);
-    if(get_post_meta($postId, $key, false)) {
-        update_post_meta($postId, $key, $value);
-    } else {
-        add_post_meta($postId, $key, $value);
-    }
-    if(!$value){
-        delete_post_meta($postId, $key);
-    }
+    savePost($postId, 'schedule', serialize($_POST['schedule']));
+    savePost($postId, 'tmp-date', $_POST['tmp-date']);
 }
