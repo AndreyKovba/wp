@@ -17,7 +17,6 @@ if(isset($_SESSION['client_group'])) {
     $scheduleData = prepareScheduleBlockData();
     if(count($scheduleData)>0) {
         ?>
-        <div class="col-sm-12 col-md-4">
             <div class="well">
                 <?php
                 foreach ($scheduleData as $scheduleDataItem) {
@@ -30,7 +29,6 @@ if(isset($_SESSION['client_group'])) {
                 }
                 ?>
             </div>
-        </div>
         <?php
     }
 }

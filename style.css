@@ -71,6 +71,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     }
 }
 
+.calendar-popup .pages-calendar{
+    margin: 0px;
+}
 .pages-calendar{
     margin: 20px 30px 20px 0px;
 }
@@ -129,4 +132,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .client-pages .client-page .client-page-title{
     font-size: 14px;
     font-weight: bold;
+}
+.right-block{
+    float: right;
 }
