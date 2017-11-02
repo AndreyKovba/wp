@@ -39,6 +39,14 @@ function getScheduleItemTemplate(){
         </tr>
         <tr>
             <th>
+                <label>Info text</label>
+            </th>
+            <td>
+                <textarea class="info-text"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>
                 <label>Day to show</label>
             </th>
             <td>
@@ -114,6 +122,11 @@ function wpt_schedule_fields() {
             {
                 width: 100px;
             }
+            .schedule-item.form-table .info-text{
+                margin-top: 5px;
+                width: 250px;
+                height: 50px;
+            }
             .schedule-item.form-table .days{
                 background: white;
                 cursor: text;
@@ -144,7 +157,6 @@ function wpt_schedule_fields() {
                         });
                     },
                 });
-                var currentPagesCount = 0;
                 var lastIndex = <?php echo $lastIndex;?>;
                 var name = '<?php echo $name;?>';
                 var clientPages = {<?php
@@ -155,22 +167,19 @@ function wpt_schedule_fields() {
                     }
                 ?>};
 
-
                 var scheduleTemplate = jQuery(<?php echo "'" . str_replace("\n", " ", getScheduleItemTemplate()) . "'";?>);
 
                 <?php
                 foreach($schedule as $scheduleItem){
                     $pageId = $scheduleItem['pageId'];
+                    $pageDay = $scheduleItem['pageDay'];
+                    $pageInfo = $scheduleItem['pageInfo'];
                     ?>
-                    insertScheduleItem(scheduleTemplate, clientPages, name, <?php echo $pageId;?>, <?php echo $scheduleItem['pageDay'];?>);
+                    insertScheduleItem(scheduleTemplate, clientPages, name, <?php echo $pageId;?>, <?php echo $pageDay;?>, <?php echo $pageInfo;?>);
                     <?php
                 }
                 ?>
                 applyIsSelected();
-
-                function isCanAdd(){
-                    return Object.keys(clientPages).length > currentPagesCount;
-                }
 
                 function applyIsSelected(){
                     var selectedPages = [];
@@ -187,7 +196,7 @@ function wpt_schedule_fields() {
                     });
                 }
 
-                function insertScheduleItem(scheduleTemplate, clientPages, name, pageId, pageDay) {
+                function insertScheduleItem(scheduleTemplate, clientPages, name, pageId, pageDay, pageInfo) {
                     var newScheduleItem = scheduleTemplate.clone();
                     var select = jQuery(newScheduleItem).find('select');
                     select.attr('name', name + '[' + lastIndex + '][pageId]');
@@ -203,6 +212,13 @@ function wpt_schedule_fields() {
                         pageDay = 0;
                     }
                     input.val(pageDay);
+
+                    var textArea = jQuery(newScheduleItem).find('textarea.info-text');
+                    textArea.attr('name', name + '[' + lastIndex + '][pageInfo]');
+                    if(typeof pageInfo != 'undefined'){
+                        textArea.val(pageInfo);
+                    }
+
                     newScheduleItem.find('.datepicker').datepicker({
                         dateFormat: 'yy-mm-dd',
                         onSelect: function(dateText, inst) {
@@ -217,10 +233,6 @@ function wpt_schedule_fields() {
                     });
                     jQuery('.schedule').append(newScheduleItem);
                     lastIndex++;
-                    currentPagesCount++;
-                    if(!isCanAdd()){
-                        jQuery('.add-schedule-item').hide();
-                    }
                     applyIsSelected();
                 }
 
@@ -230,10 +242,6 @@ function wpt_schedule_fields() {
 
                 function removeScheduleItem(scheduleItem){
                     scheduleItem.remove();
-                    currentPagesCount--;
-                    if(isCanAdd()){
-                        jQuery('.add-schedule-item').show();
-                    }
                     applyIsSelected();
                 }
 
