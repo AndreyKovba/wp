@@ -70,18 +70,20 @@ function getClientPages($ignoreDate = false, $getInfo = false){
         }
         $scheduleInfo[$pageId] = [
             'startDate' => $scheduleStartDate,
-            'isAvailable' => ($scheduleStartDate <= $currentDate),
+            'isAvailable' => (bool) ($scheduleStartDate <= $currentDate),
             'pageInfo' => $scheduleItem['pageInfo'],
         ];
     }
     return array_filter(
         $allPages,
-        function($page, $index) use ($scheduleInfo, $ignoreDate) {
+        function($page, $index) use ($scheduleInfo, $ignoreDate, $startDate) {
             if(isset($scheduleInfo[$page->ID])){
                 $page->startDate = $scheduleInfo[$page->ID]['startDate'];
                 $page->pageInfo = $scheduleInfo[$page->ID]['pageInfo'];
                 return $ignoreDate || $scheduleInfo[$page->ID]['isAvailable'];
             }
+            $page->startDate = $startDate;
+            $page->pageInfo = '';
             return true;
         }
     );

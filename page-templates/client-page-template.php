@@ -88,6 +88,7 @@ else{
     </div><!-- #primary -->
 
     <?php get_sidebar(); ?>
+    <?php get_template_part('template-parts/block', 'schedule');?>
     <?php get_footer(); ?>
 <?php
 }
