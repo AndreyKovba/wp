@@ -39,7 +39,7 @@ function login_to_group($postData){
     exit;
 }
 
-function getClientPages($ignoreDate = false){
+function getClientPages($ignoreDate = false, $getInfo = false){
     if(!isset($_SESSION['client_group'])){
         return [];
     }
@@ -56,12 +56,22 @@ function getClientPages($ignoreDate = false){
     $startDate = DateTime::createFromFormat ('Y-m-d', get_post_meta($clientGroup->ID, 'start-date', true));
     $scheduleId = get_post_meta($clientGroup->ID, 'schedule', true);
     $scheduleData = unserialize(get_post_meta($scheduleId, 'schedule', true));
+    $fakePageId = -2;
     foreach($scheduleData as $scheduleItem){
         $scheduleStartDate = clone($startDate);
         $scheduleStartDate->add(new DateInterval("P{$scheduleItem['pageDay']}D"));
-        $scheduleInfo[$scheduleItem['pageId']] = [
+        $pageId = $scheduleItem['pageId'];
+        if($getInfo && $pageId==-1){
+            $pageId = $fakePageId;
+            $fakePage = new stdClass();
+            $fakePage->ID = $pageId;
+            $allPages[] = $fakePage;
+            $fakePageId--;
+        }
+        $scheduleInfo[$pageId] = [
             'startDate' => $scheduleStartDate,
             'isAvailable' => ($scheduleStartDate <= $currentDate),
+            'pageInfo' => $scheduleItem['pageInfo'],
         ];
     }
     return array_filter(
@@ -69,6 +79,7 @@ function getClientPages($ignoreDate = false){
         function($page, $index) use ($scheduleInfo, $ignoreDate) {
             if(isset($scheduleInfo[$page->ID])){
                 $page->startDate = $scheduleInfo[$page->ID]['startDate'];
+                $page->pageInfo = $scheduleInfo[$page->ID]['pageInfo'];
                 return $ignoreDate || $scheduleInfo[$page->ID]['isAvailable'];
             }
             return true;
@@ -104,8 +115,10 @@ function get_month_callback() {
     $month = $_POST['month'] * 1;
     $pagesDates = [];
     $currentDate = new DateTime();
-    if(isset($_POST['pagesDates']) && isset($_POST['pagesDates']["{$year}-{$month}"])){
-        $pagesDates = $_POST['pagesDates'][$year.'-'.$month];
+    if( isset($_POST['pagesDatesData']) && isset($_POST['pagesDatesData']["{$year}-{$month}"]) ) {
+        foreach ($_POST['pagesDatesData']["{$year}-{$month}"] as $day=>$info) {
+            $pagesDates[$day] = $info;
+        }
     }
     ?>
 
@@ -135,7 +148,7 @@ function get_month_callback() {
                         }
                         else if ($dayNumber <= $maxDate){
                             $cellClass = '';
-                            if(in_array($dayNumber, $pagesDates)){
+                            if(isset($pagesDates[$dayNumber])){
                                 $cellClass = 'open-date';
                                 if(!$isFuture){
                                     $cellDate = DateTime::createFromFormat ('Y-m-d', "{$year}-{$month}-{$dayNumber}");
@@ -145,9 +158,15 @@ function get_month_callback() {
                                 if($isFuture){
                                     $cellClass .= ' future';
                                 }
+
+                                $infoText = "";
+                                if(strlen($pagesDates[$dayNumber])>0){
+                                    $cellClass .= ' has-info';
+                                    $infoText = $pagesDates[$dayNumber];
+                                }
                             }
                             ?>
-                            <div class="day-number <?php echo $cellClass;?>">
+                            <div class="day-number <?php echo $cellClass;?>" rel="<?php echo $infoText;?>">
                                 <?php echo $dayNumber;?>
                             </div>
                             <?php

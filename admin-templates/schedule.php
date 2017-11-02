@@ -175,7 +175,7 @@ function wpt_schedule_fields() {
                     $pageDay = $scheduleItem['pageDay'];
                     $pageInfo = $scheduleItem['pageInfo'];
                     ?>
-                    insertScheduleItem(scheduleTemplate, clientPages, name, <?php echo $pageId;?>, <?php echo $pageDay;?>, <?php echo $pageInfo;?>);
+                    insertScheduleItem(scheduleTemplate, clientPages, name, <?php echo $pageId;?>, <?php echo $pageDay;?>, <?php echo "'{$pageInfo}'";?>);
                     <?php
                 }
                 ?>

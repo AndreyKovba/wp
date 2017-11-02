@@ -108,6 +108,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     height: 28px;
     line-height: 28px;
 }
+.pages-calendar .days-list td .day-number.has-info{
+    cursor: pointer;
+}
 .pages-calendar .days-list td .day-number.open-date{
     background: #e37b00;
     color: white;
