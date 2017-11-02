@@ -1,3 +1,4 @@
+<div class="info-text" style="display: none"></div>
 <?php
 add_action('wp_footer', 'my_action_javascript', 99); // для фронта
 function my_action_javascript() {
