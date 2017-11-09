@@ -2,10 +2,10 @@
 add_action( 'init', 'register_schedule' );
 function register_schedule() {
     $labels = array(
-        'name' => 'Schedules',
-        'add_new_item' => 'Add schedules',
-        'edit_item' => 'Edit schedules',
-        'menu_name' => 'Schedules'
+        'name' => translateWord('Schedules'),
+        'add_new_item' => translateWord('Add schedules'),
+        'edit_item' => translateWord('Edit schedules'),
+        'menu_name' => translateWord('Schedules')
     );
     $args = array(
         'labels' => $labels,
@@ -20,7 +20,7 @@ function register_schedule() {
 
 
 function add_schedule_metaboxes() {
-    add_meta_box('wpt_schedule_fields', 'Scheduled pages', 'wpt_schedule_fields', 'schedule', 'normal', 'default');
+    add_meta_box('wpt_schedule_fields', translateWord('Scheduled pages'), 'wpt_schedule_fields', 'schedule', 'normal', 'default');
 }
 
 function getScheduleItemTemplate(){
@@ -29,7 +29,7 @@ function getScheduleItemTemplate(){
     <table class="schedule-item form-table">
         <tr>
             <th>
-                <label>Page name</label>
+                <label><?php echo translateWord("Page name"); ?></label>
             </th>
             <td>
                 <select>
@@ -39,7 +39,7 @@ function getScheduleItemTemplate(){
         </tr>
         <tr>
             <th>
-                <label>Info text</label>
+                <label><?php echo translateWord("Info text"); ?></label>
             </th>
             <td>
                 <textarea class="info-text"></textarea>
@@ -47,7 +47,7 @@ function getScheduleItemTemplate(){
         </tr>
         <tr>
             <th>
-                <label>Day to show</label>
+                <label><?php echo translateWord("Day to show"); ?></label>
             </th>
             <td>
                 <input class="days" type="text" readonly/>
@@ -56,7 +56,7 @@ function getScheduleItemTemplate(){
         </tr>
         <tr>
             <th></th>
-            <td><a href="#" class="page-title-action remove-schedule-item">Remove</a></td>
+            <td><a href="#" class="page-title-action remove-schedule-item"><?php echo translateWord("Remove"); ?></a></td>
         </tr>
     </table>
     <?php
@@ -83,7 +83,7 @@ function wpt_schedule_fields() {
         <table class="tmp-date form-table">
             <tr>
                 <th>
-                    <label>Temp date start</label>
+                    <label><?php echo translateWord("Temp date start"); ?></label>
                 </th>
                 <td>
                     <input type="text" name="tmp-date" class="datepicker" value="<?php echo $tmpDate;?>"/>
@@ -92,7 +92,7 @@ function wpt_schedule_fields() {
         </table>
         <div class="schedule">
         </div>
-        <a href="#" class="page-title-action add-schedule-item">Add</a>
+        <a href="#" class="page-title-action add-schedule-item"><?php echo translateWord("Add"); ?></a>
         <style>
             .remove-schedule-item{
                 margin-left: 0px !important;

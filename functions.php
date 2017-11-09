@@ -215,6 +215,36 @@ function savePost($postId, $key, $value){
     }
 }
 
+function translateWord($word){
+    if(get_locale() != 'sv_SE'){
+        return $word;
+    }
+    $translations = [
+        "Client groups" => "Rehabgrupper",
+        "Edit client group" => "Redigera rehabgrupp",
+        "Add client group" => "Lägg till rehabgrupp",
+        "Group fields" => "Rehabgrupp",
+        "Password" => "Lösenord",
+        "Start date" => "Start datum",
+        "Client Page Template" => "Mina sidor rehabgrupp",
+
+        "Schedules" => "Gruppscheman",
+        "Edit schedules" => "Redigera gruppschema",
+        "Add schedules" => "Lägg till gruppschema",
+        "Scheduled pages" => "Gruppschema",
+        "Temp date start" => "Datum för utgångspunkt",
+        "Page name" => "Sidnamn",
+        "Info text" => "Händelse",
+        "Day to show" => "Visningsdag",
+        "Add" => "Lägg till",
+        "Remove" => "Ta bort",
+    ];
+    if(!isset($translations[$word])){
+        return $word;
+    }
+    return $translations[$word];
+}
+
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/client-groups.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/users-extended.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/schedule.php";

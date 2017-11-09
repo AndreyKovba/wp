@@ -2,10 +2,10 @@
 add_action( 'init', 'register_client_group_type' );
 function register_client_group_type() {
     $labels = array(
-        'name' => 'Client groups',
-        'add_new_item' => 'Add client group',
-        'edit_item' => 'Edit client group',
-        'menu_name' => 'Client groups'
+        'name' => translateWord('Client groups'),
+        'add_new_item' => translateWord('Add client group'),
+        'edit_item' => translateWord('Edit client group'),
+        'menu_name' => translateWord('Client groups'),
     );
     $args = array(
         'labels' => $labels,
@@ -23,19 +23,19 @@ $fields = [
     [
         'type' => 'text',
         'name' => 'password',
-        'title' => 'Password',
+        'title' => translateWord('Password'),
         'class' => 'widefat',
     ],
     [
         'type' => 'text',
         'name' => 'start-date',
-        'title' => 'Start date',
+        'title' => translateWord('Start date'),
         'class' => 'datepicker widefat',
     ]
 ];
 
 function add_events_metaboxes() {
-    add_meta_box('wpt_group_fields', 'Group fields', 'wpt_group_fields', 'client-groups', 'normal', 'default');
+    add_meta_box('wpt_group_fields', translateWord('Group fields'), 'wpt_group_fields', 'client-groups', 'normal', 'default');
 }
 
 wp_enqueue_style( 'jquery-ui-datepicker-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css');

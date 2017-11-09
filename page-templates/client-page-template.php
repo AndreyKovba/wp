@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Client Page Template
+ * Template Name: Mina sidor rehabgrupp
  *
  * @package WordPress
  * @subpackage Twenty_Seventeen
