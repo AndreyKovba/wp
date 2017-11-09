@@ -86,11 +86,11 @@ else{
 
         </main><!-- #main -->
     </div><!-- #primary -->
+</div><!-- main-content-inner -->
 
-    <?php get_sidebar(); ?>
     <div class="col-sm-12 col-md-4 right-block">
-        <?php get_template_part('template-parts/block', 'schedule');?>
         <?php get_template_part('template-parts/block', 'links');?>
+        <?php get_template_part('template-parts/block', 'schedule');?>
     </div>
     <?php get_footer(); ?>
 <?php

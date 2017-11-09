@@ -136,3 +136,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .right-block{
     float: right;
 }
+.ui-widget-content .info-text a{
+    color: #e37b00;
+}
+.ui-widget-content .info-text a:focus{
+    outline: none;
+}

@@ -1,16 +1,6 @@
 <div class="client-pages">
 <?php
-$clientPages = getClientPages();
-uasort($clientPages, function($firstElement, $secondElement){
-    if(!isset($firstElement->startDate)){
-        return 1;
-    }
-    if(!isset($secondElement->startDate)){
-        return -1;
-    }
-    return $firstElement->startDate > $secondElement->startDate ? -1 : 1;
-});
-
+$clientPages = sortClientPagesByDate(getClientPages());
 foreach ($clientPages as $clientPage) {
     ?>
     <div class="client-page">

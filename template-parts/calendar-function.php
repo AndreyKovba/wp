@@ -4,6 +4,7 @@ add_action('wp_footer', 'my_action_javascript', 99); // для фронта
 function my_action_javascript() {
     $clientPages = getClientPages(true, true);
     $pagesDates = [];
+    $currentDate = new DateTime();
     foreach($clientPages as $clientPage){
         if(isset($clientPage->startDate)) {
             $startDate = $clientPage->startDate;
@@ -16,7 +17,12 @@ function my_action_javascript() {
                 $pagesDates[$yearAndMonth][$day] = '';
             }
             if(isset($clientPage->pageInfo) && strlen($clientPage->pageInfo)>0){
-                $pagesDates[$yearAndMonth][$day] .= "<p>{$clientPage->pageInfo}</p>";
+                $text = $clientPage->pageInfo;
+                if($clientPage->startDate <= $currentDate && $clientPage->ID > 0 ) {
+                    $href = get_permalink($clientPage->ID);
+                    $text = "<a href=\"{$href}\">{$clientPage->pageInfo}</a>";
+                }
+                $pagesDates[$yearAndMonth][$day] .= htmlentities("<p>{$text}</p>");
             }
         }
     }
@@ -25,7 +31,7 @@ function my_action_javascript() {
         jQuery(document).ready(function() {
             jQuery(document).on('click', '.day-number.has-info', function (e) {
                 e.preventDefault();
-                jQuery( ".info-text" ).html(jQuery(this).attr('rel'));
+                jQuery( ".info-text" ).html(jQuery(this).find('.inner-text-template').html());
                 jQuery( ".info-text" ).dialog();
             });
 

@@ -118,9 +118,11 @@ function wpt_schedule_fields() {
                 width: 150px;
             }
             .schedule-item.form-table .days,
-            .schedule-item.form-table .datepicker
+            .schedule-item.form-table .datepicker,
+            .wp-admin .schedule-item.form-table select,
+            .tmp-date.form-table .datepicker
             {
-                width: 100px;
+                width: 250px;
             }
             .schedule-item.form-table .info-text{
                 margin-top: 5px;

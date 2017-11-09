@@ -108,6 +108,19 @@ function getAvailableMenuItems($availablePages){
     return $availableMenuItems;
 }
 
+function sortClientPagesByDate($clientPages){
+    uasort($clientPages, function($firstElement, $secondElement){
+        if(!isset($firstElement->startDate)){
+            return 1;
+        }
+        if(!isset($secondElement->startDate)){
+            return -1;
+        }
+        return $firstElement->startDate > $secondElement->startDate ? -1 : 1;
+    });
+    return $clientPages;
+}
+
 add_action('wp_ajax_get_month', 'get_month_callback');
 add_action('wp_ajax_nopriv_get_month', 'get_month_callback');
 function get_month_callback() {
@@ -119,7 +132,7 @@ function get_month_callback() {
     $currentDate = new DateTime();
     if( isset($_POST['pagesDatesData']) && isset($_POST['pagesDatesData']["{$year}-{$month}"]) ) {
         foreach ($_POST['pagesDatesData']["{$year}-{$month}"] as $day=>$info) {
-            $pagesDates[$day] = $info;
+            $pagesDates[$day*1] = $info;
         }
     }
     ?>
@@ -168,7 +181,10 @@ function get_month_callback() {
                                 }
                             }
                             ?>
-                            <div class="day-number <?php echo $cellClass;?>" rel="<?php echo $infoText;?>">
+                            <div class="day-number <?php echo $cellClass;?>" rel="">
+                                <div class="inner-text-template" style="display: none"><?php
+                                    echo html_entity_decode($infoText);
+                                ?></div>
                                 <?php echo $dayNumber;?>
                             </div>
                             <?php
