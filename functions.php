@@ -108,15 +108,17 @@ function getAvailableMenuItems($availablePages){
     return $availableMenuItems;
 }
 
-function sortClientPagesByDate($clientPages){
-    uasort($clientPages, function($firstElement, $secondElement){
+function sortClientPagesByDate($clientPages, $backward = false){
+    uasort($clientPages, function($firstElement, $secondElement) use($backward){
         if(!isset($firstElement->startDate)){
-            return 1;
+            return $backward ? 1 : -1;
         }
         if(!isset($secondElement->startDate)){
-            return -1;
+            return $backward ? -1 : 1;
         }
-        return $firstElement->startDate > $secondElement->startDate ? -1 : 1;
+        return
+            $firstElement->startDate > $secondElement->startDate ?
+                ($backward ? -1 : 1) : ($backward ? 1 : -1);
     });
     return $clientPages;
 }

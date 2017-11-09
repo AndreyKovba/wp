@@ -1,6 +1,6 @@
 <div class="client-pages">
 <?php
-$clientPages = sortClientPagesByDate(getClientPages());
+$clientPages = sortClientPagesByDate(getClientPages(), true);
 foreach ($clientPages as $clientPage) {
     ?>
     <div class="client-page">
