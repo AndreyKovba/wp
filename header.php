@@ -68,7 +68,7 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && (strpos( $_SERVER['HTTP_USER_AGENT'
         jQuery('.log-out-button').on('click', function () {
             jQuery.ajax({
                 method: "POST",
-                url: "/welcome-page/",
+                url: "/min-sida/",
                 data: {
                     logout: true,
                 },
