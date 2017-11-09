@@ -88,7 +88,7 @@ else{
     </div><!-- #primary -->
 </div><!-- main-content-inner -->
 
-    <div class="col-sm-12 col-md-4 right-block">
+    <div id="secondary" class="col-sm-12 col-md-4 right-block">
         <?php get_template_part('template-parts/block', 'links');?>
         <?php get_template_part('template-parts/block', 'schedule');?>
     </div>

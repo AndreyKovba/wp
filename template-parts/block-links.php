@@ -11,7 +11,10 @@ if(isset($_SESSION['client_group'])) {
         });
     </script>
     <div class="well">
-        <a class="calendar-link" href="#">Kalender</a>
+        <div class="widget">
+            <h3 class="widget-title">BRA ATT VETA</h3>
+            <a class="calendar-link" href="#">Kalender</a>
+        </div>
     </div>
     <?php
 }

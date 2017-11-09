@@ -22,27 +22,30 @@ if(isset($_SESSION['client_group'])) {
     if(count($scheduleData)>0) {
         ?>
             <div class="well">
-                <?php
-                foreach ($scheduleData as $scheduleDataItem) {
-                    ?>
-                    <div>
-                        <?php
-                        if( $scheduleDataItem['isAvailable'] && $scheduleDataItem['ID'] > 0 ) {
-                            ?>
-                            <a class="client-page-title" href="<?php echo get_permalink($scheduleDataItem['ID']); ?>">
-                                <?php echo $scheduleDataItem['startDate'];?>:
-                            </a>
-                            <?php
-                        }
-                        else{
-                            echo "{$scheduleDataItem['startDate']}: ";
-                        }
-                        ?>
-                        <?php echo $scheduleDataItem['pageInfo']; ?>
-                    </div>
+                <div class="widget">
+                    <h3 class="widget-title">SCHEMALAGDA HÄNDELSER</h3>
                     <?php
-                }
-                ?>
+                    foreach ($scheduleData as $scheduleDataItem) {
+                        $scheduleText = "<strong>{$scheduleDataItem['startDate']}</strong>: {$scheduleDataItem['pageInfo']}";
+                        ?>
+                        <div>
+                            <?php
+                            if( $scheduleDataItem['isAvailable'] && $scheduleDataItem['ID'] > 0 ) {
+                                ?>
+                                <a class="client-page-title" href="<?php echo get_permalink($scheduleDataItem['ID']); ?>">
+                                    <?php echo $scheduleText;?>
+                                </a>
+                                <?php
+                            }
+                            else{
+                                echo $scheduleText;
+                            }
+                            ?>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
             </div>
         <?php
     }
