@@ -4,7 +4,7 @@ function prepareScheduleBlockData(){
     $clientPages = sortClientPagesByDate(getClientPages(true, true));
     $currentDate = new DateTime();
     foreach($clientPages as $clientPage){
-        if(strlen($clientPage->pageInfo)>0){
+        if($clientPage->ID>0 || strlen($clientPage->pageInfo)>0) {
             $scheduleData[] = [
                 'ID' => $clientPage->ID,
                 'postTitle' => $clientPage->post_title,
@@ -26,7 +26,8 @@ if(isset($_SESSION['client_group'])) {
                     <h3 class="widget-title">SCHEMALAGDA HÄNDELSER</h3>
                     <?php
                     foreach ($scheduleData as $scheduleDataItem) {
-                        $scheduleText = "<strong>{$scheduleDataItem['startDate']}</strong>: {$scheduleDataItem['pageInfo']}";
+                        $pageInfo = strlen($scheduleDataItem['pageInfo'])>0 ? $scheduleDataItem['pageInfo'] : $scheduleDataItem['postTitle'];
+                        $scheduleText = "<strong>{$scheduleDataItem['startDate']}</strong>: {$pageInfo}";
                         ?>
                         <div>
                             <?php
