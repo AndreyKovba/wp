@@ -108,7 +108,7 @@ function getAvailableMenuItems($availablePages){
     return $availableMenuItems;
 }
 
-function sortClientPagesByDate($clientPages, $backward = false){
+function sortClientPagesByDates($clientPages, $backward = false){
     uasort($clientPages, function($firstElement, $secondElement) use($backward){
         if(!isset($firstElement->startDate)){
             return $backward ? 1 : -1;
@@ -120,7 +120,15 @@ function sortClientPagesByDate($clientPages, $backward = false){
             $firstElement->startDate > $secondElement->startDate ?
                 ($backward ? -1 : 1) : ($backward ? 1 : -1);
     });
-    return $clientPages;
+    $clientPagesByDates = [];
+    foreach($clientPages as $clientPage){
+        $startDate = $clientPage->startDate->format('Y-m-d');
+        if(!isset($clientPagesByDates[$startDate])){
+            $clientPagesByDates[$startDate] = [];
+        }
+        $clientPagesByDates[$startDate][] = $clientPage;
+    }
+    return $clientPagesByDates;
 }
 
 add_action('wp_ajax_get_month', 'get_month_callback');
