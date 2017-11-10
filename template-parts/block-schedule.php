@@ -1,7 +1,7 @@
 <?php
 function prepareScheduleBlockData(){
     $scheduleData = [];
-    $clientPages = sortClientPagesByDate(getClientPages(true, true));
+    $clientPages = sortClientPagesByDate(getClientPages(true, true, true));
     $currentDate = new DateTime();
     foreach($clientPages as $clientPage){
         if($clientPage->ID>0 || strlen($clientPage->pageInfo)>0) {

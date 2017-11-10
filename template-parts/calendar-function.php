@@ -2,7 +2,7 @@
 <?php
 add_action('wp_footer', 'my_action_javascript', 99); // для фронта
 function my_action_javascript() {
-    $clientPages = getClientPages(true, true);
+    $clientPages = getClientPages(true, true, true);
     $pagesDates = [];
     $currentDate = new DateTime();
     foreach($clientPages as $clientPage){

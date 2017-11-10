@@ -13,7 +13,7 @@ if(isset($_SESSION['client_group'])) {
     <div class="well">
         <div class="widget">
             <h3 class="widget-title">BRA ATT VETA</h3>
-            <a class="calendar-link" href="#">Kalender</a>
+            <a class="calendar-link" href="#"><strong>Kalender</strong></a>
         </div>
     </div>
     <?php

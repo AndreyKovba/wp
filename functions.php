@@ -39,7 +39,7 @@ function login_to_group($postData){
     exit;
 }
 
-function getClientPages($ignoreDate = false, $getInfo = false){
+function getClientPages($fromSchedule = false, $ignoreDate = false, $getInfo = false){
     if(!isset($_SESSION['client_group'])){
         return [];
     }
@@ -76,7 +76,7 @@ function getClientPages($ignoreDate = false, $getInfo = false){
     }
     return array_filter(
         $allPages,
-        function($page, $index) use ($scheduleInfo, $ignoreDate, $startDate) {
+        function($page, $index) use ($scheduleInfo, $ignoreDate, $startDate, $fromSchedule) {
             if(isset($scheduleInfo[$page->ID])){
                 $page->startDate = $scheduleInfo[$page->ID]['startDate'];
                 $page->pageInfo = $scheduleInfo[$page->ID]['pageInfo'];
@@ -84,7 +84,7 @@ function getClientPages($ignoreDate = false, $getInfo = false){
             }
             $page->startDate = $startDate;
             $page->pageInfo = '';
-            return true;
+            return !$fromSchedule;
         }
     );
 }
