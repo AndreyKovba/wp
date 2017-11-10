@@ -162,11 +162,14 @@ function wpt_schedule_fields() {
                 var lastIndex = <?php echo $lastIndex;?>;
                 var name = '<?php echo $name;?>';
                 var clientPages = [<?php
+                    $jsClientPages = [];
                     foreach ($clientPages as $clientPage) {
-                        echo '{ pageId: "' . $clientPage->ID . '", 
-                            postTitle: "' . $clientPage->post_title . '",
-                        },';
+                        $jsClientPages[] = '{ 
+                            pageId: "' . $clientPage->ID . '", 
+                            postTitle: "' . $clientPage->post_title . '"
+                        }';
                     }
+                    echo implode(',', $jsClientPages);
                 ?>];
                 clientPages = clientPages.sort(function (a, b) {
                     return a.postTitle.localeCompare( b.postTitle );
@@ -187,16 +190,16 @@ function wpt_schedule_fields() {
                 applyIsSelected();
 
                 function applyIsSelected(){
-                    var selectedPages = [];
-                    jQuery('.schedule-item select').each(function(index){
-                        selectedPages[this.value] = true;
+                    var selectedPages = {};
+                    jQuery('.schedule-item select').each(function(index, item){
+                        selectedPages[jQuery(item).val()] = true;
                     });
                     jQuery.each( clientPages, function(index, clientPage){
                         if(typeof selectedPages[clientPage.pageId] != 'undefined'){
-                            jQuery('.schedule-item select option[value=' + clientPage.pageId + ']:not(:selected)').hide();
+                            jQuery('.schedule-item select option[value=' + clientPage.pageId + ']:not(:selected)').hide().prop('disabled', true);
                         }
                         else{
-                            jQuery('.schedule-item select option[value=' + clientPage.pageId + ']').show();
+                            jQuery('.schedule-item select option[value=' + clientPage.pageId + ']').show().prop('disabled', false);
                         }
                     });
                 }
@@ -242,8 +245,6 @@ function wpt_schedule_fields() {
                     datepickerObject.datepicker({
                         dateFormat: 'yy-mm-dd',
                         onSelect: function(dateText, inst) {
-
-
                             var selectedTime = new Date(dateText).getTime();
                             var tmpTime = new Date(jQuery('.tmp-date .datepicker').val()).getTime();
                             var days = getDays(selectedTime - tmpTime);
