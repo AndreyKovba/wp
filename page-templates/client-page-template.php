@@ -67,7 +67,7 @@ else{
                 else {
                     while (have_posts()) {
                         the_post();
-                        if($post->post_name == 'welcome-page') {
+                        if($post->post_name == 'min-sida') {
                             get_template_part('template-parts/content', 'welcome-page');
                         }
                         else{

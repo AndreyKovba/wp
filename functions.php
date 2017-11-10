@@ -26,7 +26,7 @@ function login_to_group($postData){
     $url = '/';
     if(count($groups)){
         $_SESSION['client_group'] = $groups[0]->ID;
-        $url = site_url() . '/welcome-page/';
+        $url = site_url() . '/min-sida/';
     }
     else{
         unset($_SESSION['client_group']);

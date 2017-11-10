@@ -19,7 +19,7 @@ if ( is_page_template( 'page-fullwidth.php' ) ) {
 
 <div class="post-inner-content">
     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-        <header class="entry-header page-header">
+        <header class="entry-header page-header" style="display:inline;">
             <h1 class="entry-title"><?php the_title(); ?></h1>
         </header><!-- .entry-header -->
 
