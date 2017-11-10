@@ -113,7 +113,7 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && (strpos( $_SERVER['HTTP_USER_AGENT'
                         <?php
                         if($isLoggedIn) {
                             ?>
-                            <div class="log-out-button">log out</div>
+                            <div class="log-out-button">LOG OUT</div>
                             <?php
                         }
                         ?>

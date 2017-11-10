@@ -53,20 +53,25 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .dropdown-menu .disabled>a{
     color: #c0c0c0 !important;
 }
-.log-out-button{
+.site-navigation-inner #logo{
+    margin-right: 20px;
+}
+.site-navigation-inner .log-out-button{
     display: inline-block;
-    float: left;
-    margin: 20px 0px 20px 45px;
+    float: right;
+    margin: 20px 0px;
     color: white;
     font-family: 'Gill Sans MT';
     font-weight: 700;
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
-    line-height: 26px;
+    line-height: 30px;
+}
+.site-navigation-inner #menu-main{
+    float: left;
 }
 @media (max-width: 767px){
-    .log-out-button {
-        float: right;
+    .site-navigation-inner .log-out-button {
         margin-right: 5px;
     }
 }
