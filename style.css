@@ -50,6 +50,11 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .dropdown-menu .disabled {
     background: white !important;
 }
+@media (max-width: 767px){
+    .dropdown-menu .disabled {
+        background: #749dd3 !important;
+    }
+}
 .dropdown-menu .disabled>a{
     color: #c0c0c0 !important;
 }
@@ -149,4 +154,15 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 .ui-widget-content .info-text a:focus{
     outline: none;
+}
+.flex-control-nav{
+    z-index: 100;
+}
+.dropdown-menu > li.menu-item-has-children{
+    padding-left: 30px;
+}
+.dropdown-menu > li.menu-item-has-children > .caret.sparkling-dropdown{
+    position: absolute;
+    left: 15px;
+    top: 17px;
 }
