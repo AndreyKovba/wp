@@ -7,7 +7,7 @@ function add_extra_user_fields( $user ) {
     $posts = get_posts([
         'post_type' => 'client-groups',
     ]);
-    $selectedGroupID = get_user_meta( $user->ID, 'client-group', true);
+    $selectedGroupID = esc_attr(get_user_meta( $user->ID, 'client-group', true));
     ?>
     <table class="form-table">
     <tbody>
@@ -43,7 +43,7 @@ add_action( 'edit_user_profile_update', 'save_extra_user_fields' );
 
 function save_extra_user_fields( $userId ) {
     $key = 'client-group';
-    $value = sanitize_text_field( $_POST['client-group'] );
+    $value = sanitize_text_field($_POST['client-group']);
     if(get_user_meta($userId, $key, FALSE)) {
         update_user_meta($userId, $key, $value);
     } else {

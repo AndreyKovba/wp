@@ -164,7 +164,7 @@ function wpt_schedule_fields() {
                 var clientPages = [<?php
                     $jsClientPages = [];
                     foreach ($clientPages as $clientPage) {
-                        $jsClientPages[] = '{ 
+                        $jsClientPages[] = '{
                             pageId: "' . $clientPage->ID . '", 
                             postTitle: "' . $clientPage->post_title . '"
                         }';
