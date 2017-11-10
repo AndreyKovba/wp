@@ -16,11 +16,18 @@ function my_action_javascript() {
             if(!isset($pagesDates[$yearAndMonth][$day])){
                 $pagesDates[$yearAndMonth][$day] = '';
             }
+            $pageInfo = "";
             if(isset($clientPage->pageInfo) && strlen($clientPage->pageInfo)>0){
-                $text = $clientPage->pageInfo;
+                $pageInfo = $clientPage->pageInfo;
+            }
+            elseif(isset($clientPage->post_title) && strlen($clientPage->post_title)>0){
+                $pageInfo = $clientPage->post_title;
+            }
+            if(strlen($pageInfo) > 0){
+                $text = $pageInfo;
                 if($clientPage->startDate <= $currentDate && $clientPage->ID > 0 ) {
                     $href = get_permalink($clientPage->ID);
-                    $text = "<a href=\"{$href}\">{$clientPage->pageInfo}</a>";
+                    $text = "<a href=\"{$href}\">{$pageInfo}</a>";
                 }
                 $pagesDates[$yearAndMonth][$day] .= htmlentities("<p>{$text}</p>");
             }
