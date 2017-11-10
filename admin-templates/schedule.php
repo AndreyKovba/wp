@@ -198,6 +198,15 @@ function wpt_schedule_fields() {
                     });
                 }
 
+                function getFormattedDate(date) {
+                    var year = date.getFullYear();
+                    var month = (1 + date.getMonth()).toString();
+                    month = month.length > 1 ? month : '0' + month;
+                    var day = date.getDate().toString();
+                    day = day.length > 1 ? day : '0' + day;
+                    return year + '-' + month + '-' + day;
+                }
+
                 function insertScheduleItem(scheduleTemplate, clientPages, name, pageId, pageDay, pageInfo) {
                     var newScheduleItem = scheduleTemplate.clone();
                     var select = jQuery(newScheduleItem).find('select');
@@ -221,9 +230,17 @@ function wpt_schedule_fields() {
                         textArea.val(pageInfo);
                     }
 
-                    newScheduleItem.find('.datepicker').datepicker({
+                    var datepickerObject = newScheduleItem.find('.datepicker');
+                    var selectedDate = new Date(jQuery('.tmp-date .datepicker').val());
+                    var newDate = new Date(selectedDate);
+                    newDate.setDate(newDate.getDate() + pageDay);
+                    datepickerObject.val(getFormattedDate(newDate));
+
+                    datepickerObject.datepicker({
                         dateFormat: 'yy-mm-dd',
                         onSelect: function(dateText, inst) {
+
+
                             var selectedTime = new Date(dateText).getTime();
                             var tmpTime = new Date(jQuery('.tmp-date .datepicker').val()).getTime();
                             var days = getDays(selectedTime - tmpTime);
