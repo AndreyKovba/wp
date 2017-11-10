@@ -16,7 +16,7 @@ if(isset($_SESSION['client_group'])) {
                         uasort($clientPages, function($firstElement, $secondElement) {
                             $firstInfo = mb_strtolower(getPageInfo($firstElement));
                             $secondInfo = mb_strtolower(getPageInfo($secondElement));
-                            return strcmp($firstInfo, $secondInfo);
+                            return strcmp($secondInfo, $firstInfo);
                         });
                         foreach ($clientPages as $clientPagesItem) {
                             $isAvailable = $clientPagesItem->startDate <= $currentDate;

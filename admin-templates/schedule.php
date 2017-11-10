@@ -161,13 +161,16 @@ function wpt_schedule_fields() {
                 });
                 var lastIndex = <?php echo $lastIndex;?>;
                 var name = '<?php echo $name;?>';
-                var clientPages = {<?php
+                var clientPages = [<?php
                     foreach ($clientPages as $clientPage) {
-                        echo '"' . $clientPage->ID . '": {
+                        echo '{ pageId: "' . $clientPage->ID . '", 
                             postTitle: "' . $clientPage->post_title . '",
                         },';
                     }
-                ?>};
+                ?>];
+                clientPages = clientPages.sort(function (a, b) {
+                    return a.postTitle.localeCompare( b.postTitle );
+                });
 
                 var scheduleTemplate = jQuery(<?php echo "'" . str_replace("\n", " ", getScheduleItemTemplate()) . "'";?>);
 
@@ -188,12 +191,12 @@ function wpt_schedule_fields() {
                     jQuery('.schedule-item select').each(function(index){
                         selectedPages[this.value] = true;
                     });
-                    jQuery.each( clientPages, function(index, value){
-                        if(typeof selectedPages[index] != 'undefined'){
-                            jQuery('.schedule-item select option[value=' + index + ']:not(:selected)').hide();
+                    jQuery.each( clientPages, function(index, clientPage){
+                        if(typeof selectedPages[clientPage.pageId] != 'undefined'){
+                            jQuery('.schedule-item select option[value=' + clientPage.pageId + ']:not(:selected)').hide();
                         }
                         else{
-                            jQuery('.schedule-item select option[value=' + index + ']').show();
+                            jQuery('.schedule-item select option[value=' + clientPage.pageId + ']').show();
                         }
                     });
                 }
@@ -211,10 +214,10 @@ function wpt_schedule_fields() {
                     var newScheduleItem = scheduleTemplate.clone();
                     var select = jQuery(newScheduleItem).find('select');
                     select.attr('name', name + '[' + lastIndex + '][pageId]');
-                    jQuery.each(clientPages, function(index, value){
-                        var selected = (pageId == index) ? 'selected' : '';
+                    jQuery.each(clientPages, function(index, clientPage){
+                        var selected = (pageId == clientPage.pageId) ? 'selected' : '';
                         select.append(
-                            '<option value="' + index + '" ' + selected + '>' + value.postTitle + '</option>'
+                            '<option value="' + clientPage.pageId + '" ' + selected + '>' + clientPage.postTitle + '</option>'
                         );
                     });
                     var input = jQuery(newScheduleItem).find('input.days');
