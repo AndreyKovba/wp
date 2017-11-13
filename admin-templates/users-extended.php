@@ -6,6 +6,8 @@ add_action( 'edit_user_profile', 'add_extra_user_fields' );
 function add_extra_user_fields( $user ) {
     $posts = get_posts([
         'post_type' => 'client-groups',
+        'orderby' => 'post_title',
+        'order' => 'asc',
     ]);
     $selectedGroupID = esc_attr(get_user_meta( $user->ID, 'client-group', true));
     ?>

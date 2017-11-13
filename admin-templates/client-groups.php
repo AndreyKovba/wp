@@ -62,6 +62,8 @@ function wpt_group_fields() {
             <?php
             $schedules = get_posts([
                 'post_type' => 'schedule',
+                'orderby' => 'post_title',
+                'order' => 'asc',
             ]);
             $scheduleId = esc_attr(get_post_meta($post->ID, 'schedule', true));
             foreach ($schedules as $schedule){
@@ -128,7 +130,7 @@ function makeUnique($postId, $key, $value){
         $counter++;
     }
     if($hasErrors){
-        $error = new WP_Error(1001, "Field \"{$key}\" should be unique! Unique value generated.");
+        $error = new WP_Error(1001, translateWord("The password has been taken by another group. An automatic password has been created"));
         set_transient("my_save_post_errors", $error);
     }
     return $value;

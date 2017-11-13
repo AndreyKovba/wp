@@ -253,6 +253,9 @@ function translateWord($word){
         "Day to show" => "Visningsdag",
         "Add" => "Lägg till",
         "Remove" => "Ta bort",
+
+        "The password has been taken by another group. An automatic password has been created" =>
+            "Lösenordet är upptaget av annan grupp. Ett automatiskt lösenord har skapats"
     ];
     if(!isset($translations[$word])){
         return $word;
