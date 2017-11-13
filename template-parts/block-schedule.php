@@ -19,24 +19,27 @@ if(isset($_SESSION['client_group'])) {
                             return strcmp($firstInfo, $secondInfo);
                         });
                         foreach ($clientPages as $clientPagesItem) {
-                            $isAvailable = $clientPagesItem->startDate <= $currentDate;
-                            $pageInfo = stripslashes(getPageInfo($clientPagesItem));
-                            $scheduleText = "<strong>{$clientPagesItem->startDate->format('Y-m-d')}</strong>: {$pageInfo}";
-                            ?>
-                            <div>
-                                <?php
-                                if ($isAvailable && $clientPagesItem->ID > 0) {
-                                    ?>
-                                    <a class="client-page-title" href="<?php echo get_permalink($clientPagesItem->ID); ?>">
-                                        <?php echo $scheduleText; ?>
-                                    </a>
-                                    <?php
-                                } else {
-                                    echo $scheduleText;
-                                }
+                            if(strlen($clientPagesItem->pageInfo) > 0) {
+                                $isAvailable = $clientPagesItem->startDate <= $currentDate;
+                                $pageInfo = stripslashes(getPageInfo($clientPagesItem));
+                                $scheduleText = "<strong>{$clientPagesItem->startDate->format('Y-m-d')}</strong>: {$pageInfo}";
                                 ?>
-                            </div>
-                            <?php
+                                <div>
+                                    <?php
+                                    if ($isAvailable && $clientPagesItem->ID > 0) {
+                                        ?>
+                                        <a class="client-page-title"
+                                           href="<?php echo get_permalink($clientPagesItem->ID); ?>">
+                                            <?php echo $scheduleText; ?>
+                                        </a>
+                                        <?php
+                                    } else {
+                                        echo $scheduleText;
+                                    }
+                                    ?>
+                                </div>
+                                <?php
+                            }
                         }
                     }
                     ?>
