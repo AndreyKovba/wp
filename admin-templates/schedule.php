@@ -76,6 +76,11 @@ function wpt_schedule_fields() {
         $tmpDate = date('Y-m-d');
     }
     $schedule = unserialize(get_post_meta($post->ID, 'schedule', true));
+    foreach($schedule as &$scheduleList){
+        foreach($scheduleList as &$scheduleValue) {
+            $scheduleValue = base64_decode($scheduleValue);
+        }
+    }
     $name = 'schedule';
     $lastIndex = 0;
     ?>
@@ -289,6 +294,12 @@ function wpt_schedule_fields() {
 
 add_action('save_post_schedule', 'wpt_save_schedules_meta');
 function wpt_save_schedules_meta($postId, $post) {
-    savePost($postId, 'schedule', serialize($_POST['schedule']));
+    $schedule = $_POST['schedule'];
+    foreach($schedule as &$scheduleList){
+        foreach($scheduleList as &$scheduleValue){
+            $scheduleValue = base64_encode($scheduleValue);
+        }
+    }
+    savePost($postId, 'schedule', serialize($schedule));
     savePost($postId, 'tmp-date', $_POST['tmp-date']);
 }
