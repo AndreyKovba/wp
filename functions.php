@@ -137,7 +137,7 @@ function get_month_callback() {
     $monthes = ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
     $year = $_POST['year'] * 1;
-    $month = $_POST['month'] * 1;
+    $month = sprintf('%02d', $_POST['month']);
     $pagesDates = [];
     $currentDate = new DateTime();
     if( isset($_POST['pagesDatesData']) && isset($_POST['pagesDatesData']["{$year}-{$month}"]) ) {
@@ -149,7 +149,7 @@ function get_month_callback() {
 
     <div class="month-block">
         <a href="#" class="previous-month"> < </a>
-        <?php echo $monthes[$month - 1] . ' ' . $year; ?>
+        <?php echo $monthes[$month*1 - 1] . ' ' . $year; ?>
         <a href="#" class="next-month"> > </a>
     </div>
     <?php
