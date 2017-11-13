@@ -56,6 +56,11 @@ function getClientPages($fromSchedule = false, $ignoreDate = false, $getInfo = f
     $startDate = DateTime::createFromFormat ('Y-m-d', get_post_meta($clientGroup->ID, 'start-date', true));
     $scheduleId = get_post_meta($clientGroup->ID, 'schedule', true);
     $scheduleData = unserialize(get_post_meta($scheduleId, 'schedule', true));
+    foreach($scheduleData as &$scheduleList){
+        foreach($scheduleList as &$scheduleValue) {
+            $scheduleValue = base64_decode($scheduleValue);
+        }
+    }
     $fakePageId = -2;
     foreach($scheduleData as $scheduleItem){
         $scheduleStartDate = clone($startDate);
@@ -187,7 +192,7 @@ function get_month_callback() {
                                 $infoText = "";
                                 if(strlen($pagesDates[$dayNumber])>0){
                                     $cellClass .= ' has-info';
-                                    $infoText = $pagesDates[$dayNumber];
+                                    $infoText = stripslashes($pagesDates[$dayNumber]);
                                 }
                             }
                             ?>

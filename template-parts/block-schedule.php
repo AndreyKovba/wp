@@ -20,7 +20,7 @@ if(isset($_SESSION['client_group'])) {
                         });
                         foreach ($clientPages as $clientPagesItem) {
                             $isAvailable = $clientPagesItem->startDate <= $currentDate;
-                            $pageInfo = getPageInfo($clientPagesItem);
+                            $pageInfo = stripslashes(getPageInfo($clientPagesItem));
                             $scheduleText = "<strong>{$clientPagesItem->startDate->format('Y-m-d')}</strong>: {$pageInfo}";
                             ?>
                             <div>
