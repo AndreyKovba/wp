@@ -85,6 +85,9 @@ function wpt_schedule_fields() {
     $lastIndex = 0;
     ?>
     <div class="schedule-block">
+        <div class="loader-spinner">
+            <div class="background"></div>
+        </div>
         <table class="tmp-date form-table">
             <tr>
                 <th>
@@ -99,6 +102,21 @@ function wpt_schedule_fields() {
         </div>
         <a href="#" class="page-title-action add-schedule-item"><?php echo translateWord("Add"); ?></a>
         <style>
+            .loader-spinner {
+                background: url('/wp-content/themes/sparkling-child/loader.gif') no-repeat center;
+                width: 100%;
+                height: 83px;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                z-index: 2;
+            }
+            .loader-spinner .background{
+                background: #000;
+                -ms-filter: "alpha(opacity=10)";
+                opacity: 0.1;
+                height: 100%;
+            }
             .remove-schedule-item{
                 margin-left: 0px !important;
             }
@@ -147,6 +165,8 @@ function wpt_schedule_fields() {
         </style>
         <script type="text/javascript">
             jQuery(document).ready(function(){
+                var loaderSpinner = jQuery('.loader-spinner');
+                loaderSpinner.height( loaderSpinner.closest('.schedule-block').height() );
                 var tmpDate = jQuery('.tmp-date .datepicker').val();
                 jQuery('.tmp-date .datepicker').datepicker({
                     dateFormat: 'yy-mm-dd',
@@ -286,6 +306,7 @@ function wpt_schedule_fields() {
                     e.preventDefault();
                     removeScheduleItem(jQuery(this).closest('.schedule-item'));
                 });
+                loaderSpinner.hide();
             });
         </script>
     </div>
