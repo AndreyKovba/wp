@@ -1,6 +1,4 @@
 <?php
-// Add your custom functions here
-
 // Queue parent style followed by child/customized style
 add_action( 'wp_enqueue_scripts', 'sparkling_enqueue_child_styles', 99);
 
@@ -81,7 +79,7 @@ function getClientPages($fromSchedule = false, $ignoreDate = false, $getInfo = f
     }
     return array_filter(
         $allPages,
-        function($page, $index) use ($scheduleInfo, $ignoreDate, $startDate, $fromSchedule) {
+        function($page) use ($scheduleInfo, $ignoreDate, $startDate, $fromSchedule) {
             if(isset($scheduleInfo[$page->ID])){
                 $page->startDate = $scheduleInfo[$page->ID]['startDate'];
                 $page->pageInfo = $scheduleInfo[$page->ID]['pageInfo'];
@@ -266,4 +264,17 @@ function translateWord($word){
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/client-groups.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/users-extended.php";
 require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/admin-templates/schedule.php";
+
+function sparkling_un_logged_header_menu(){
+    require_once $_SERVER['DOCUMENT_ROOT']. "/wp-content/themes/sparkling-child/inc/class-wp-un-logged-bootstrap-navwalker.php";
+    wp_nav_menu(array(
+        'menu'              => 'primary',
+        'theme_location'    => 'primary',
+        'container'         => 'div',
+        'container_class'   => 'collapse navbar-collapse navbar-ex1-collapse',
+        'menu_class'        => 'nav navbar-nav',
+        'fallback_cb'       => 'WP_Bootstrap_Navwalker::fallback',
+        'walker'            => new WP_Bootstrap_Un_Logged_Navwalker(),
+    ));
+}
 ?>

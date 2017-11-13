@@ -43,13 +43,7 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && (strpos( $_SERVER['HTTP_USER_AGENT'
     jQuery(document).ready(function () {
         <?php
         $isLoggedIn = isset($_SESSION['client_group']);
-        if(!$isLoggedIn){
-        ?>
-            jQuery('#menu-item-859>span').remove();
-            jQuery('#menu-item-859>ul.dropdown-menu').remove();
-        <?php
-        }
-        else{
+        if($isLoggedIn){
             $availablePages = getAvailablePagesIds(getClientPages());
         ?>
             var availableMenuItems = [<?php echo implode(',', getAvailableMenuItems($availablePages)); ?>];
@@ -117,7 +111,14 @@ if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && (strpos( $_SERVER['HTTP_USER_AGENT'
                             <?php
                         }
                         ?>
-                        <?php sparkling_header_menu(); // main navigation ?>
+                        <?php
+                        if(!$isLoggedIn) {
+                            sparkling_un_logged_header_menu();
+                        }
+                        else{
+                            sparkling_header_menu();
+                        }
+                        ?>
 					</div>
 				</div>
 			</div>
