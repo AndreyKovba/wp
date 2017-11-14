@@ -86,6 +86,9 @@ function wpt_schedule_fields() {
     ?>
     <div class="schedule-block">
         <div class="loader-spinner">
+            <div class="loader-text">
+                <?php echo translateWord("Loading, wait some seconds...");?>
+            </div>
             <div class="background"></div>
         </div>
         <table class="tmp-date form-table">
@@ -103,13 +106,19 @@ function wpt_schedule_fields() {
         <a href="#" class="page-title-action add-schedule-item"><?php echo translateWord("Add"); ?></a>
         <style>
             .loader-spinner {
-                background: url('/wp-content/themes/sparkling-child/loader.gif') no-repeat center;
                 width: 100%;
-                height: 83px;
+                height: 103px;
                 position: absolute;
-                top: 0px;
+                top: -7px;
                 left: 0px;
                 z-index: 2;
+            }
+            .loader-text{
+                position: absolute;
+                top: calc(50% - 10px);
+                width: 100%;
+                text-align: center;
+                font-size: 16px;
             }
             .loader-spinner .background{
                 background: #000;
@@ -166,7 +175,7 @@ function wpt_schedule_fields() {
         <script type="text/javascript">
             jQuery(document).ready(function(){
                 var loaderSpinner = jQuery('.loader-spinner');
-                loaderSpinner.height( loaderSpinner.closest('.schedule-block').height() );
+                loaderSpinner.height( loaderSpinner.closest('.schedule-block').height() + 20);
                 var tmpDate = jQuery('.tmp-date .datepicker').val();
                 jQuery('.tmp-date .datepicker').datepicker({
                     dateFormat: 'yy-mm-dd',
